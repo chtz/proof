@@ -3,33 +3,26 @@ package ch.furthermore.gae.proof;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.TimeZone;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.io.IOUtils;
-
-import com.google.appengine.repackaged.com.google.api.client.util.Base64;
-
-import ch.furthermore.gae.proof.crypto.KeyPairRegistry;
-
 /**
  * <pre>
- * $ curl -s -H "Content-Type: text/plain" -d "halli" http://localhost:8080/proofs | json_pp
- * {
- *    "signatureBase" : "2017-07-19T11:52:35Z//halli",
- *    "signature" : "dPsQ+tXs0sFJwS8Tk0ogL6JG+XfhEAH1Iv59j+LRjjjrbGGL+IDxW++YMxE2EtdbCs8uXirDl2nY+9d7f257Xpym9Eh7QfNu66jTDYoeet507bgrRe2FEHDqrU463/op2yDQkUUbI7NipQWCFggyXkRHwXKSeUSgWvH3yo6cjeq+T1/fR3d6/jGio6gblCefFpxGOq0OcmTWUNQTsYgqekNz+XGeF1Z24XTOAWJ6MUvg56wr173AEKtKoWx3MpW1gdBFAup1e3A6tQaIiWKqeYFAvLlBDO/82jRhbpxH8QjnWP0OD5rqbja/Wig84AhUayY6crmb9UGdx5PV5UNShXIBDhxmhs3nNc7tQJuaZkkq09whodYvcyRKu3tL2lUJY1RvkYmgFW9l174RXXEyPE7g17l/Im7sP2GtiC5oORsysvm7eb1KQY5bF7rgi1irg8bg3+wqO46WVy0Bqv8j6Ogi2ozhAx3LhCnHXTKaJ5JUKluQeidfBtNeVvLzCd1CGpM4LFp0+8umvBiNGlhWomTkNwTmSvYA6LOika5OM1fd1I75XyZBS5YOUIqmD+XJtlNYBFOIo1/RlR9vFJDPCWbhkajqwZJDC2lKJ2bHKrLqNcEWcngon1yJr9i2utpPybdPmJ66hwxx6CZkkrfzx1px1wByCjsJpy59y+OhmNA=",
- *    "publicKey" : "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAjtcOcN0UIxVVnNGDvQNMYaueX4mr/xpeuLDNE3iR1e08jQQ3te8vv592v0T6q30wcpnecjVMbAto/9OhRV1dI44o5pdE752D9VRJ0NqEtFgXhPE1Bw15Mdip/8aqnH3QEG+7M48MuXPKmRYUcwA4idy3ZabG3lBAanK/ro4O18OpJkflu4fAWm4kIveLXFZJQAPZLN/JaizxHEocuHPm+kjEn3S/A2mmWwSd05fl3OSgqF890P/DYCWWvLJ1/nKOksMJENRmkPF+2kVTDF3acOCUzlgHGGY6MmFx6uXZVU/eOkQiS7bkpENNaxzuTWADt5e8IXSJJmnrvDRbnBLiYz3ZELb3gOmAjejejJSpz+mfLbBvoNIXSDHFTx8hVvcPKUw2BF3s3CHuyA++xm6oIpA5wbFbkNXsIVAtjDlEOu6mwOpSuLVCUiCe0Jw6r2yOn18WEzyV8vVCN2biVQ/3RwklEHIH10FdbCTqG+sWSrmHKzZeiYZ4xlxlfFdgdYgL2VsmOiSc9mFIJvAbLRTDtpXNBuP2aImyI1lKBy5LWjCa1BQO7Bu9Nd6ZkvqkLitKITWiC/Dzg9es6HVYLy45dzcFLhpJBr6HqDCPiedV70I0F4FoJioyk++gcIBjD+dIC1Z7nXa+I4/udckwV+U6nqb/JDftaWEDyxw5FsVsfD0CAwEAAQ=="
- * }
+curl -s -H "Content-Type: text/plain" -d "this-as-a-sample-hash" http://localhost:8080/proofs | json_pp
+{
+   "signatureBase" : "2017-07-19T12:50:31Z//this-as-a-sample-hash",
+   "signatureHash" : "this-as-a-sample-hash",
+   "signatureTimestamp" : "2017-07-19T12:50:31Z",
+   "signature" : "i+Sy1howLpyJxRyeXpIEj8HnGYvQqY301zsfFGj1NE+ZhLGqKEbiDgiZPnJX+hOiQc5fHFBYkMDmK5qHH+bYzp4BTOILTbxcse5GyLIyA7w8OttOm5r7oGwIxSvEKWZ7XWnn8caUj6QOCn0xgkN+mi0Cp9Rbsv2mVKumzWY80b/P5cbWVpM1PaDD4okFMiOZ4VCFCJuJ09efCOkFR7NyeP6usc4xdSiYiLaZ7EjKXeMPy9KXPPQRWQGclham9uba4wX/YmSCKEAtoHJlE5NTUsZ7Vf3w3flrcT1NU6OKMUuM5//O65RMf1GHBLoG4I/eiEr02bW17esgvZUjjaIu8hWOMme5NE/hbNRejWD7aLcR3/cr0coo8VlI0380AE6z61tOSAvs/d3NTV0kF/YCucgys/B2HtlFMDlFix97Y4mEO4S+lB/UiJKAfJ2LK9TGKkSH7N8DwaJz30vfsMvCRbVIUhy7M34duYYVcQ/Bpxc63g2fBxqfjvXzPz51upcG33wq5LDuuJ48uXn5BS31ETyguPVEvkfr1G//Cq5hKqgA7ydPM5//4pbYG3GkCj/Y1CHWLeZxaOYfMfmqyu7s2zWxWdSSnBVaU6/e+tA6IeJ11pt/nyn4jtTw+RAPfTnruvbb7OkYBNZt80f54B/q8OnJTn3OB7CIshqDz62sUR8=",
+   "signatureBasePattern" : "signatureTimestamp + '//' + signatureHash",
+   "signaturePublicKey" : "MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAjtcOcN0UIxVVnNGDvQNMYaueX4mr/xpeuLDNE3iR1e08jQQ3te8vv592v0T6q30wcpnecjVMbAto/9OhRV1dI44o5pdE752D9VRJ0NqEtFgXhPE1Bw15Mdip/8aqnH3QEG+7M48MuXPKmRYUcwA4idy3ZabG3lBAanK/ro4O18OpJkflu4fAWm4kIveLXFZJQAPZLN/JaizxHEocuHPm+kjEn3S/A2mmWwSd05fl3OSgqF890P/DYCWWvLJ1/nKOksMJENRmkPF+2kVTDF3acOCUzlgHGGY6MmFx6uXZVU/eOkQiS7bkpENNaxzuTWADt5e8IXSJJmnrvDRbnBLiYz3ZELb3gOmAjejejJSpz+mfLbBvoNIXSDHFTx8hVvcPKUw2BF3s3CHuyA++xm6oIpA5wbFbkNXsIVAtjDlEOu6mwOpSuLVCUiCe0Jw6r2yOn18WEzyV8vVCN2biVQ/3RwklEHIH10FdbCTqG+sWSrmHKzZeiYZ4xlxlfFdgdYgL2VsmOiSc9mFIJvAbLRTDtpXNBuP2aImyI1lKBy5LWjCa1BQO7Bu9Nd6ZkvqkLitKITWiC/Dzg9es6HVYLy45dzcFLhpJBr6HqDCPiedV70I0F4FoJioyk++gcIBjD+dIC1Z7nXa+I4/udckwV+U6nqb/JDftaWEDyxw5FsVsfD0CAwEAAQ=="
+}
  * </pre>
  * 
  * <pre>
- * curl -s -H "Content-Type: text/plain" -d "first" https://proof-174209.appspot.com/proofs | json_pp
+curl -s -H "Content-Type: text/plain" -d "first" https://proof-174209.appspot.com/proofs | json_pp
  * </pre>
  */
 public class CreateProofServlet extends BaseServlet {
@@ -39,8 +32,8 @@ public class CreateProofServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		Proof proof = new Proof();
 		
-		proof.hash = requestAsString(req);
-		if (proof.hash.length() > 1024) {
+		proof.signatureHash = requestAsString(req);
+		if (proof.signatureHash.length() > 1024) {
 			throw new IllegalArgumentException("Hash too big");
 		}
 		
@@ -48,24 +41,18 @@ public class CreateProofServlet extends BaseServlet {
 		
 		persist(proof);
 		
-		jsonResponse(resp, new JsonProof(proof));
+		jsonResponse(resp, proof);
 	}
 
 	private void calcSig(Proof proof) throws IOException {
-		proof.publicKey = Base64.encodeBase64String(KeyPairRegistry.rsa.getPublicKey().getEncoded());
+		proof.signaturePublicKey = publicKey();
 		
-		proof.timestamp = currentDateTime();
+		proof.signatureTimestamp = currentDateTime();
 		
-		proof.signature = Base64.encodeBase64String(KeyPairRegistry.rsa.sign(IOUtils.toInputStream(proof.signatureBase(), "UTF8")));
+		proof.calcSignatureBase();
+		proof.signature = signature(proof.signatureBase);
 	}
 
-	private String currentDateTime() {
-		TimeZone tz = TimeZone.getTimeZone("UTC");
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
-		df.setTimeZone(tz);
-		return df.format(new Date());
-	}
-	
 	private void persist(Proof proof) {
 		ofy().save().entity(proof).now();
 	}

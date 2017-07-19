@@ -8,13 +8,68 @@ import com.googlecode.objectify.annotation.Index;
 
 @Entity
 public class Proof {
-	@Id String id = UUID.randomUUID().toString();
-	@Index String hash;
-	String timestamp;
+	@Id 
+	String id = UUID.randomUUID().toString();
+	
+	@Index 
+	String signatureHash;
+	
+	String signatureTimestamp;
 	String signature;
-	String publicKey;
+	String signaturePublicKey;
+	String signatureBase;
+	String signatureBasePattern;
 
-	public String signatureBase() {
-		return timestamp + "//" + hash;
+	public void calcSignatureBase() {
+		signatureBasePattern = "signatureTimestamp + '//' + signatureHash";
+		signatureBase = signatureTimestamp + "//" + signatureHash;
+	}
+
+	public String getSignatureHash() {
+		return signatureHash;
+	}
+
+	public void setSignatureHash(String signatureHash) {
+		this.signatureHash = signatureHash;
+	}
+
+	public String getSignatureTimestamp() {
+		return signatureTimestamp;
+	}
+
+	public void setSignatureTimestamp(String signatureTimestamp) {
+		this.signatureTimestamp = signatureTimestamp;
+	}
+
+	public String getSignature() {
+		return signature;
+	}
+
+	public void setSignature(String signature) {
+		this.signature = signature;
+	}
+
+	public String getSignaturePublicKey() {
+		return signaturePublicKey;
+	}
+
+	public void setSignaturePublicKey(String signaturePublicKey) {
+		this.signaturePublicKey = signaturePublicKey;
+	}
+
+	public String getSignatureBase() {
+		return signatureBase;
+	}
+
+	public void setSignatureBase(String signatureBase) {
+		this.signatureBase = signatureBase;
+	}
+
+	public String getSignatureBasePattern() {
+		return signatureBasePattern;
+	}
+
+	public void setSignatureBasePattern(String signatureBasePattern) {
+		this.signatureBasePattern = signatureBasePattern;
 	}
 }
