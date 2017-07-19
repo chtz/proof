@@ -21,6 +21,10 @@ import javax.servlet.http.HttpServletResponse;
  *    }
  * ]
  * </pre>
+ * 
+ * <pre>
+ * curl -s -H "Content-Type: text/plain" -d "first" https://proof-174209.appspot.com/hashes | json_pp
+ * </pre>
  */
 public class LookupProofServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
