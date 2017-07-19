@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.furthermore.gae.proof.crypto.rsa.RSA;
 
 /**
+ * <pre>
  * $ cat <<EOT >> /tmp/verify-sample-request.txt
  * {
  *    "signatureBase" : "2017-07-19T11:52:35Z//halli",
@@ -29,6 +30,11 @@ import ch.furthermore.gae.proof.crypto.rsa.RSA;
  *    "signature" : "dPsQ+tXs0sFJwS8Tk0ogL6JG+XfhEAH1Iv59j+LRjjjrbGGL+IDxW++YMxE2EtdbCs8uXirDl2nY+9d7f257Xpym9Eh7QfNu66jTDYoeet507bgrRe2FEHDqrU463/op2yDQkUUbI7NipQWCFggyXkRHwXKSeUSgWvH3yo6cjeq+T1/fR3d6/jGio6gblCefFpxGOq0OcmTWUNQTsYgqekNz+XGeF1Z24XTOAWJ6MUvg56wr173AEKtKoWx3MpW1gdBFAup1e3A6tQaIiWKqeYFAvLlBDO/82jRhbpxH8QjnWP0OD5rqbja/Wig84AhUayY6crmb9UGdx5PV5UNShXIBDhxmhs3nNc7tQJuaZkkq09whodYvcyRKu3tL2lUJY1RvkYmgFW9l174RXXEyPE7g17l/Im7sP2GtiC5oORsysvm7eb1KQY5bF7rgi1irg8bg3+wqO46WVy0Bqv8j6Ogi2ozhAx3LhCnHXTKaJ5JUKluQeidfBtNeVvLzCd1CGpM4LFp0+8umvBiNGlhWomTkNwTmSvYA6LOika5OM1fd1I75XyZBS5YOUIqmD+XJtlNYBFOIo1/RlR9vFJDPCWbhkajqwZJDC2lKJ2bHKrLqNcEWcngon1yJr9i2utpPybdPmJ66hwxx6CZkkrfzx1px1wByCjsJpy59y+OhmNA=",
  *    "valid" : true
  * } 
+ * </pre>
+ * 
+ * <pre>
+ * curl -s -H "Content-Type: text/plain" -d @/tmp/verify-sample-request.txt https://proof-174209.appspot.com/verify | json_pp
+ * </pre>
  */
 public class VerifySignatureServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
