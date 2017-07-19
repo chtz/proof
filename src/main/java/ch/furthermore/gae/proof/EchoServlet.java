@@ -24,9 +24,9 @@ import com.googlecode.objectify.ObjectifyService;
  * < Content-Length: 5
  * halli
  * 
- * $ curl -H "Content-Type: text/plain" -d "halli" https://httpecho-167219.appspot.com/register/get/200/willi/wuff
+ * $ curl -H "Content-Type: text/plain" -d "halli" https://proof-174209.appspot.com//register/get/200/willi/wuff
  * registered |get|200|/willi/wuff|5|
- * $ curl https://httpecho-167219.appspot.com/willi/wuff
+ * $ curl https://proof-174209.appspot.com//willi/wuff
  * halli
  * </pre>
  */
