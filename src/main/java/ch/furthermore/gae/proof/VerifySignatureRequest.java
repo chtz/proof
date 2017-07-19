@@ -1,5 +1,8 @@
 package ch.furthermore.gae.proof;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class VerifySignatureRequest {
 	String signature;
 	String signaturePublicKey;

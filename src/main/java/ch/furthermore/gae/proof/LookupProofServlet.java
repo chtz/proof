@@ -24,6 +24,14 @@ curl -s -H "Content-Type: text/plain" -d "this-as-a-sample-hash" http://localhos
  * </pre>
  * 
  * <pre>
+HASH=$(shasum -a 512 src/main/java/ch/furthermore/gae/proof/CreateProofServlet.java)	
+curl -s -H "Content-Type: text/plain" -d "$HASH" http://localhost:8080/hashes | jq ".[] | {signatureTimestamp}"
+{
+  "signatureTimestamp": "2017-07-19T13:26:05Z"
+}
+ * </pre>
+ * 
+ * <pre>
 curl -s -H "Content-Type: text/plain" -d "first" https://proof-174209.appspot.com/hashes | json_pp
  * </pre>
  */

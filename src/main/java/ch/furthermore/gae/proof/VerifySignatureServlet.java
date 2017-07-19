@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ch.furthermore.gae.proof.crypto.rsa.RSA;
 
 /**
+ * 
  * <pre>
 cat <<EOT > /tmp/verify-sample-request.txt
 {
@@ -38,6 +39,33 @@ curl -s -H "Content-Type: text/plain" -d @/tmp/verify-sample-request.txt http://
  * </pre>
  * 
  * <pre>
+cat <<EOT > /tmp/verify-sample-request.txt
+{
+   "signatureBase" : "2017-07-19T12:50:31Z//this-as-a-sample-hash",
+   "signature" : "i+Sy1howLpyJxRyeXpIEj8HnGYvQqY301zsfFGj1NE+ZhLGqKEbiDgiZPnJX+hOiQc5fHFBYkMDmK5qHH+bYzp4BTOILTbxcse5GyLIyA7w8OttOm5r7oGwIxSvEKWZ7XWnn8caUj6QOCn0xgkN+mi0Cp9Rbsv2mVKumzWY80b/P5cbWVpM1PaDD4okFMiOZ4VCFCJuJ09efCOkFR7NyeP6usc4xdSiYiLaZ7EjKXeMPy9KXPPQRWQGclham9uba4wX/YmSCKEAtoHJlE5NTUsZ7Vf3w3flrcT1NU6OKMUuM5//O65RMf1GHBLoG4I/eiEr02bW17esgvZUjjaIu8hWOMme5NE/hbNRejWD7aLcR3/cr0coo8VlI0380AE6z61tOSAvs/d3NTV0kF/YCucgys/B2HtlFMDlFix97Y4mEO4S+lB/UiJKAfJ2LK9TGKkSH7N8DwaJz30vfsMvCRbVIUhy7M34duYYVcQ/Bpxc63g2fBxqfjvXzPz51upcG33wq5LDuuJ48uXn5BS31ETyguPVEvkfr1G//Cq5hKqgA7ydPM5//4pbYG3GkCj/Y1CHWLeZxaOYfMfmqyu7s2zWxWdSSnBVaU6/e+tA6IeJ11pt/nyn4jtTw+RAPfTnruvbb7OkYBNZt80f54B/q8OnJTn3OB7CIshqDz62sUR8="
+}
+EOT
+
+curl -s -H "Content-Type: text/plain" -d @/tmp/verify-sample-request.txt http://localhost:8080/verify | jq ".verificationIsSignatureValid"
+true
+ * </pre>
+ * 
+ * <pre>
+<pre>
+HASH=$(shasum -a 512 src/main/java/ch/furthermore/gae/proof/CreateProofServlet.java)
+SIGNATURE=$(cat src/main/resources/ch/furthermore/gae/proof/CreateProofServlet.sig.json  | jq -r ".signature")
+STAMP=$(cat src/main/resources/ch/furthermore/gae/proof/CreateProofServlet.sig.json  | jq -r ".signatureTimestamp")
+cat <<EOT > /tmp/verify-sample-request.txt
+{
+  "signature": "$SIGNATURE",
+  "signatureBase": "$STAMP//$HASH"
+}
+EOT
+curl -s -H "Content-Type: text/plain" -d @/tmp/verify-sample-request.txt http://localhost:8080/verify | jq ".verificationIsSignatureValid"
+ * </pre>
+ * </pre>
+ * 
+ * <pre>
 curl -s -H "Content-Type: text/plain" -d @/tmp/verify-sample-request.txt https://proof-174209.appspot.com/verify | json_pp
  * </pre>
  */
@@ -48,6 +76,11 @@ public class VerifySignatureServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		VerifySignatureRequest verifyRequest = new ObjectMapper().readValue(req.getInputStream(), VerifySignatureRequest.class);
 		byte[] sig = Base64.decodeBase64(verifyRequest.getSignature());
+		
+		if (verifyRequest.getSignaturePublicKey() == null) {
+			verifyRequest.setSignaturePublicKey(publicKey());
+		}
+		
 		RSA pubKey = new RSA(null, Base64.decodeBase64(verifyRequest.getSignaturePublicKey()));
 		
 		VerifySignatureResponse verifyResp = new VerifySignatureResponse(verifyRequest);
