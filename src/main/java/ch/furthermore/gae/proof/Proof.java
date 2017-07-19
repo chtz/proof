@@ -12,6 +12,7 @@ public class Proof {
 	@Index String hash;
 	String timestamp;
 	String signature;
+	String publicKey;
 
 	public String signatureBase() {
 		return timestamp + "//" + hash;
