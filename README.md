@@ -1,7 +1,7 @@
 # proof
 
 ```
-curl -s -H "Content-Type: text/plain" -d "($ shasum -a 512 ./temp/test.txt)" https://proof-174209.appspot.com/proofs > temp/test.txt.sig.json
+curl -s -H "Content-Type: text/plain" -d "$(shasum -a 512 ./temp/test.txt)" https://proof-174209.appspot.com/proofs > temp/test.txt.sig.json
 ```
 
 ```
@@ -22,7 +22,7 @@ REQUEST_FILE=/tmp/sample-request.json
 cat <<EOT > $REQUEST_FILE
 {
   "signature": "$SIGNATURE",
-  "signatureBase": "$STAMP//($ shasum -a 512 ./temp/test.txt)"
+  "signatureBase": "$STAMP//$(shasum -a 512 ./temp/test.txt)"
 }
 EOT
 curl -s -H "Content-Type: text/plain" -d @$REQUEST_FILE https://proof-174209.appspot.com/verify > temp/test.txt.sig.verify.json
