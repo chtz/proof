@@ -4,13 +4,23 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
 	<servlet>
-		<servlet-name>EchoServlet</servlet-name>
-		<servlet-class>ch.furthermore.gae.proof.EchoServlet</servlet-class>
+		<servlet-name>CreateProofServlet</servlet-name>
+		<servlet-class>ch.furthermore.gae.proof.CreateProofServlet</servlet-class>
+	</servlet>
+	
+	<servlet>
+		<servlet-name>LookupProofServlet</servlet-name>
+		<servlet-class>ch.furthermore.gae.proof.LookupProofServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>EchoServlet</servlet-name>
-		<url-pattern>/</url-pattern>
+		<servlet-name>CreateProofServlet</servlet-name>
+		<url-pattern>/proofs</url-pattern>
+	</servlet-mapping>
+	
+	<servlet-mapping>
+		<servlet-name>LookupProofServlet</servlet-name>
+		<url-pattern>/hashes</url-pattern>
 	</servlet-mapping>
 
 	<filter>
