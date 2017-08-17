@@ -15,7 +15,7 @@ public class KeyPairRegistry {
 	}
 	
 	public static synchronized void update(Config config) {
-//		try {
+		try {
 			String privateKey = "private.key".equals(config.getKey())
 					? config.getValue()
 					: ofy().load().type(Config.class).id("private.key").now().getValue();
@@ -28,9 +28,9 @@ public class KeyPairRegistry {
 //			String publicKey = IOUtils.toString(KeyPairRegistry.class.getResourceAsStream("public.key"), "UTF8");
 			
 			rsa = new RSA(Base64.decodeBase64(privateKey), Base64.decodeBase64(publicKey));
-//		} catch (IOException e) {
-//			throw new RuntimeException(e);
-//		}
+		} catch (Exception e) {
+			System.err.println("WARN: Cannot initialize rsa key pait: " + e);
+		}
 	}
 	
 	static {
