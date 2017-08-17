@@ -19,6 +19,10 @@ Signature date of temp/bar.txt is valid: true
 ```
 
 ```
+$ rm temp/bar.txt.sig.json
+```
+
+```
 $ ./scripts/lookup-signature.sh temp/bar.txt
 [
    {
