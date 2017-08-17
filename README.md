@@ -6,6 +6,14 @@ Signature date of temp/bar.txt is 2017-08-17T21:13:11Z
 ```
 
 ```
+$ cat temp/bar.txt.sig.json 
+{
+  "signature": "SevJJv5xJza5p8YzNgP7i2fRdHBXHhOMP6qvWVVdUjTAu6ehPgsW9LMrtYE+OOmHYK918FldAQ5aAaWg2bpBWkDgoW9zf/JNVq9VLZ4c39VLOPP4ZA6dYljPqxzDs3WiaJBuS2++r3yMNG6odrHXi6pG9HtN/3rKqGoFHoU9B/651uO73PmDzmtvitcNxKvQ/FrKNhowFCEi1nq+rnjsVypftvINJgQbcJ3a/L5+SmUUP5HxrXOTuYttvfX0f1pnxQqcrk9DGUKAH9RRcPAkO1ilcNWpA4Qod1kUV5aHooX5Ek+9DwAIDYnJ3XNrtw7o9q0N9ZEfh+3usnjk3ASI43H8RU9IffY7edd4qwhVp0p+2hy1RFGeqLNGoc0gZLnuQS9kueTJ96Cz+SZVjla3MohCwCqpjFZDwNV+fnx99MV9YnCWo+8GsAnZc5lJj2uhIXl8NM2GtbH19bb2yEhtJfYmEqOOzF7RjqyWk6Bx3p7HOtLocjBeFHk1IhIg9zvyfgd4Rs5nPVoa/8FbbBRuNQs2jxwKq4KuQdFfFzWjN/DyrLEmd4XpaLxU7RQp8EfmmwDY1piCXOVx4xSJF5GzyEy2FVxXHf62TbAnCF/mydw5UVKz6Ll1/wcNgnD1/N6/cFx7TxENCmxQbhWshGXwGGx1EI9qKipcI10xEsVigRU=",
+  "signatureTimestamp": "2017-08-17T21:13:11Z"
+}
+```
+
+```
 $ ./scripts/verify-signature.sh temp/bar.txt
 Signature date of temp/bar.txt is valid: true
 ```
