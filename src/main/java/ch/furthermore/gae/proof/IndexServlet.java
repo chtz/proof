@@ -29,7 +29,7 @@ public class IndexServlet extends BaseServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		IndexResponse response = new IndexResponse();
-		response.setPublicKey(Base64.encodeBase64String(KeyPairRegistry.rsa.getPublicKey().getEncoded()));
+		response.setPublicKey(Base64.encodeBase64String(KeyPairRegistry.get().getPublicKey().getEncoded()));
 		response.setTimestamp(currentDateTime());
 		
 		jsonResponse(resp, response);

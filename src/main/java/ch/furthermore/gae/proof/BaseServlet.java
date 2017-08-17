@@ -26,15 +26,16 @@ public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	static { 
-		ObjectifyService.register(Proof.class); 
+		ObjectifyService.register(Proof.class);
+		ObjectifyService.register(Config.class);
 	}
 	
 	protected String signature(String signatureBase) throws IOException {
-		return Base64.encodeBase64String(KeyPairRegistry.rsa.sign(IOUtils.toInputStream(signatureBase, "UTF8")));
+		return Base64.encodeBase64String(KeyPairRegistry.get().sign(IOUtils.toInputStream(signatureBase, "UTF8")));
 	}
 
 	protected String publicKey() {
-		return Base64.encodeBase64String(KeyPairRegistry.rsa.getPublicKey().getEncoded());
+		return Base64.encodeBase64String(KeyPairRegistry.get().getPublicKey().getEncoded());
 	}
 
 	protected String currentDateTime() {
