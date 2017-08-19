@@ -1,4 +1,4 @@
-package ch.furthermore.gae.proof;
+package ch.furthermore.gae.proof.entity;
 
 import java.util.UUID;
 

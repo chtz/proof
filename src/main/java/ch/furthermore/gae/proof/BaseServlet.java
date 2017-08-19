@@ -21,6 +21,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.googlecode.objectify.ObjectifyService;
 
 import ch.furthermore.gae.proof.crypto.KeyPairRegistry;
+import ch.furthermore.gae.proof.entity.Config;
+import ch.furthermore.gae.proof.entity.Proof;
 
 public abstract class BaseServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -30,28 +32,29 @@ public abstract class BaseServlet extends HttpServlet {
 		ObjectifyService.register(Config.class);
 	}
 	
-	protected String signature(String signatureBase) throws IOException {
+	String signature(String signatureBase) throws IOException {
 		return Base64.encodeBase64String(KeyPairRegistry.get().sign(IOUtils.toInputStream(signatureBase, "UTF8")));
 	}
 
-	protected String publicKey() {
+	String publicKey() {
 		return Base64.encodeBase64String(KeyPairRegistry.get().getPublicKey().getEncoded());
 	}
 
-	protected String currentDateTime() {
+	String currentDateTime() {
 		TimeZone tz = TimeZone.getTimeZone("UTC");
 		DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
 		df.setTimeZone(tz);
+		
 		return df.format(new Date());
 	}
 	
-	protected void jsonResponse(HttpServletResponse resp, Object o) throws IOException, JsonGenerationException, JsonMappingException {
+	void jsonResponse(HttpServletResponse resp, Object o) throws IOException, JsonGenerationException, JsonMappingException {
 		try (PrintWriter w = resp.getWriter()) {
 			new ObjectMapper().writeValue(w, o);
 		}
 	}
 
-	protected String requestAsString(HttpServletRequest req) throws IOException {
+	String requestAsString(HttpServletRequest req) throws IOException {
 		try (InputStream in = req.getInputStream()) {
 			return IOUtils.toString(in, "UTF8");
 		}

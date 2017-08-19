@@ -23,16 +23,6 @@
 		<servlet-class>ch.furthermore.gae.proof.VerifySignatureServlet</servlet-class>
 	</servlet>
 	
-	<servlet>
-		<servlet-name>AdminPutConfigServlet</servlet-name>
-		<servlet-class>ch.furthermore.gae.proof.AdminPutConfigServlet</servlet-class>
-	</servlet>
-	
-	<servlet-mapping>
-		<servlet-name>AdminPutConfigServlet</servlet-name>
-		<url-pattern>/admin/config</url-pattern>
-	</servlet-mapping>
-
 	<servlet-mapping>
 		<servlet-name>IndexServlet</servlet-name>
 		<url-pattern>/</url-pattern>

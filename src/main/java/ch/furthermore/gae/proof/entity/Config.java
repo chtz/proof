@@ -1,4 +1,4 @@
-package ch.furthermore.gae.proof;
+package ch.furthermore.gae.proof.entity;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
