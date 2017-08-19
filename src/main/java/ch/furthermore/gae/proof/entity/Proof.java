@@ -2,43 +2,49 @@ package ch.furthermore.gae.proof.entity;
 
 import java.util.UUID;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonInclude(Include.NON_NULL)
 public class Proof {
-	@Id 
-	String id = UUID.randomUUID().toString();
+	@JsonIgnore @Id 
+	private String id = UUID.randomUUID().toString();
 	
 	@Index 
-	String signatureHash;
+	private String hash;
 	
-	String signatureTimestamp;
-	String signature;
-	String signaturePublicKey;
-	String signatureBase;
-	String signatureBasePattern;
+	private String timestamp;
+	private String signature;
+	
+	@Ignore
+	private String publicKey;
 
-	public void calcSignatureBase() {
-		signatureBasePattern = "signatureTimestamp + '//' + signatureHash";
-		signatureBase = signatureTimestamp + "//" + signatureHash;
+	public String signatureBase() {
+		return timestamp + "/" + hash;
 	}
 
-	public String getSignatureHash() {
-		return signatureHash;
+	public String getHash() {
+		return hash;
 	}
 
-	public void setSignatureHash(String signatureHash) {
-		this.signatureHash = signatureHash;
+	public void setHash(String signatureHash) {
+		this.hash = signatureHash;
 	}
 
-	public String getSignatureTimestamp() {
-		return signatureTimestamp;
+	public String getTimestamp() {
+		return timestamp;
 	}
 
-	public void setSignatureTimestamp(String signatureTimestamp) {
-		this.signatureTimestamp = signatureTimestamp;
+	public void setTimestamp(String signatureTimestamp) {
+		this.timestamp = signatureTimestamp;
 	}
 
 	public String getSignature() {
@@ -49,27 +55,19 @@ public class Proof {
 		this.signature = signature;
 	}
 
-	public String getSignaturePublicKey() {
-		return signaturePublicKey;
+	public String getId() {
+		return id;
 	}
 
-	public void setSignaturePublicKey(String signaturePublicKey) {
-		this.signaturePublicKey = signaturePublicKey;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getSignatureBase() {
-		return signatureBase;
+	public String getPublicKey() {
+		return publicKey;
 	}
 
-	public void setSignatureBase(String signatureBase) {
-		this.signatureBase = signatureBase;
-	}
-
-	public String getSignatureBasePattern() {
-		return signatureBasePattern;
-	}
-
-	public void setSignatureBasePattern(String signatureBasePattern) {
-		this.signatureBasePattern = signatureBasePattern;
+	public void setPublicKey(String publicKey) {
+		this.publicKey = publicKey;
 	}
 }

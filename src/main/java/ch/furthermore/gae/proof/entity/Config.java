@@ -6,8 +6,8 @@ import com.googlecode.objectify.annotation.Id;
 @Entity
 public class Config {
 	@Id
-	String key;
-	String value;
+	private String key;
+	private String value;
 
 	public String getKey() {
 		return key;

@@ -6,23 +6,19 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.codec.binary.Base64;
-
-import ch.furthermore.gae.proof.crypto.KeyPairRegistry;
-
 public class IndexServlet extends BaseServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		IndexResponse response = new IndexResponse();
-		response.setPublicKey(Base64.encodeBase64String(KeyPairRegistry.get().getPublicKey().getEncoded()));
+		PublicKeyResponse response = new PublicKeyResponse();
+		response.setPublicKey(publicKey());
 		response.setTimestamp(currentDateTime());
 		
 		jsonResponse(resp, response);
 	}
 	
-	public static class IndexResponse {
+	public static class PublicKeyResponse {
 		private String publicKey;
 		private String timestamp;
 

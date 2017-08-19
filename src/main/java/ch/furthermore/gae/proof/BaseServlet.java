@@ -35,7 +35,7 @@ public abstract class BaseServlet extends HttpServlet {
 	String signature(String signatureBase) throws IOException {
 		return Base64.encodeBase64String(KeyPairRegistry.get().sign(IOUtils.toInputStream(signatureBase, "UTF8")));
 	}
-
+	
 	String publicKey() {
 		return Base64.encodeBase64String(KeyPairRegistry.get().getPublicKey().getEncoded());
 	}

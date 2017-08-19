@@ -17,6 +17,6 @@ public class LookupProofServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String hash = requestAsString(req);
 		
-		jsonResponse(resp, ofy().load().type(Proof.class).filter("signatureHash = ", hash).list()); 
+		jsonResponse(resp, ofy().load().type(Proof.class).filter("hash = ", hash).list()); 
 	}
 }

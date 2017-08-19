@@ -15,30 +15,20 @@ public class CreateProofServlet extends BaseServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		Proof proof = new Proof();
+		String hash = requestAsString(req);
 		
-		proof.setSignatureHash(requestAsString(req));
-		if (proof.getSignatureHash().length() > 1024) {
+		if (hash.length() > 1024) {
 			throw new IllegalArgumentException("Hash too big");
 		}
 		
-		calcSig(proof);
+		Proof proof = new Proof();
+		proof.setHash(hash);
+		proof.setTimestamp(currentDateTime());
+		proof.setSignature(signature(proof.signatureBase()));
+		proof.setPublicKey(publicKey());
 		
-		persist(proof);
+		ofy().save().entity(proof).now();
 		
 		jsonResponse(resp, proof);
-	}
-
-	private void calcSig(Proof proof) throws IOException {
-		proof.setSignaturePublicKey(publicKey());
-		
-		proof.setSignatureTimestamp(currentDateTime());
-		
-		proof.calcSignatureBase();
-		proof.setSignature(signature(proof.getSignatureBase()));
-	}
-
-	private void persist(Proof proof) {
-		ofy().save().entity(proof).now();
 	}
 }
