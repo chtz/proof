@@ -1,13 +1,12 @@
 package ch.furthermore.gae.proof;
 
-import static com.googlecode.objectify.ObjectifyService.ofy;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import ch.furthermore.gae.proof.crypto.ProofManager;
 import ch.furthermore.gae.proof.entity.Proof;
 
 public class CreateProofServlet extends BaseServlet {
@@ -21,13 +20,7 @@ public class CreateProofServlet extends BaseServlet {
 			throw new IllegalArgumentException("Hash too big");
 		}
 		
-		Proof proof = new Proof();
-		proof.setHash(hash);
-		proof.setTimestamp(currentDateTime());
-		proof.setSignature(signature(proof.signatureBase()));
-		proof.setPublicKey(publicKey());
-		
-		ofy().save().entity(proof).now();
+		Proof proof = ProofManager.createProof(hash);
 		
 		jsonResponse(resp, proof);
 	}

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
-import com.googlecode.objectify.annotation.Ignore;
 import com.googlecode.objectify.annotation.Index;
 
 @Entity
@@ -20,12 +19,21 @@ public class Proof {
 	
 	@Index 
 	private String hash;
-	
 	private String timestamp;
 	private String signature;
 	
-	@Ignore
+	@JsonIgnore 
+	private String privateKey;
+	
 	private String publicKey;
+
+	public String getPrivateKey() {
+		return privateKey;
+	}
+
+	public void setPrivateKey(String privateKey) {
+		this.privateKey = privateKey;
+	}
 
 	public String signatureBase() {
 		return timestamp + "/" + hash;

@@ -3,6 +3,7 @@ package ch.furthermore.gae.proof;
 import static com.googlecode.objectify.ObjectifyService.ofy;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +18,10 @@ public class LookupProofServlet extends BaseServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String hash = requestAsString(req);
 		
-		jsonResponse(resp, ofy().load().type(Proof.class).filter("hash = ", hash).list()); 
+		jsonResponse(resp, lookupProofs(hash)); 
+	}
+
+	public static List<Proof> lookupProofs(String hash) {
+		return ofy().load().type(Proof.class).filter("hash = ", hash).list();
 	}
 }
